@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Example</title>
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:3000/api/data');
+                const data = await response.json();
+                document.getElementById('result').innerText = data.message;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('result').innerText = 'Failed to fetch data.';
+            }
+        }
+
+        async function postData() {
+            try {
+                const response = await fetch('http://localhost:3000/api/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: 'test' })
+                });
+
+                // Attempt to parse the response as JSON
+                const data = await response.json();
+                document.getElementById('postResult').innerText = data.message;
+
+            } catch (error) {
+                console.error('Error posting data:', error);
+                document.getElementById('postResult').innerText = 'POST request blocked due to CORS policy.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>CORS Example</h1>
+    <button onclick="fetchData()">Fetch Data from Node.js</button>
+    <p id="result"></p>
+    <button onclick="postData()">Send POST Request to Node.js</button>
+    <p id="postResult"></p>
+</body>
+</html>
